@@ -70,7 +70,7 @@
 			try {
 				const data = await getData(apiurl);
 				console.log(data);
-				document.getElementById('data').innerHTML = syntaxHighlight(JSON.stringify(data, undefined, 4));
+				document.getElementById('data').innerHTML = '<pre>' + syntaxHighlight(JSON.stringify(data, undefined, 4)) + '</pre>';
 			} catch (error) {
 				console.error("Error!", error.message);
 			}
