@@ -22,7 +22,7 @@
 		const apiurl = 'https://api.hgbrasil.com/weather?format=json-cors&key=38c0fb37';		
 		const data = getData(apiurl);
 		console.log(data);
-		document.getElementById('data').innerText = data;
+		document.getElementById('data').innerText = JSON.stringify(data);
 	</script>
 </body>
 </html>
