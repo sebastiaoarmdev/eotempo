@@ -11,8 +11,15 @@
 	}
 	</style>
 </head>
-<body>
+<body>	
 	<script>
+		async function getData(url) {
+			const response = await fetch(url);
+			const data = await response.json();
+			return data;
+		}   
+
+		console.log(getData('https://api.hgbrasil.com/weather?key=38c0fb37'));
 	</script>
 </body>
 </html>
