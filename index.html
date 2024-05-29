@@ -14,15 +14,27 @@
 <body>
 	<div id="data"></div>
 	<script>
+		'use strict';
+
+		const apiurl = 'https://api.hgbrasil.com/weather?format=json-cors&key=38c0fb37';	
+
 		async function getData(url) {
 			const response = await fetch(url);
 			const data = await response.json();
 			return data;
 		}
-		const apiurl = 'https://api.hgbrasil.com/weather?format=json-cors&key=38c0fb37';		
-		const data = getData(apiurl);
-		console.log(data);
-		document.getElementById('data').innerText = JSON.stringify(data);
+
+		async function showData() {
+			try {
+				const data = await getData(apiurl);
+				console.log(data);
+				document.getElementById('data').innerText = JSON.stringify(data);
+			} catch (error) {
+				console.error("Error!", error.message);
+			}
+		}
+
+		showData();
 	</script>
 </body>
 </html>
