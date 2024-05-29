@@ -9,6 +9,26 @@
 	body {
 		font-family: monospace;
 	}
+	pre {
+		outline: 1px solid #ccc; 
+		padding: 5px; 
+		margin: 5px;
+	}
+	.string {
+		color: green;
+	}
+	.number { 
+		color: darkorange; 
+	}
+	.boolean { 
+		color: blue; 
+	}
+	.null { 
+		color: magenta;
+	}
+	.key { 
+		color: red; 
+	}
 	</style>
 </head>
 <body>
@@ -50,7 +70,7 @@
 			try {
 				const data = await getData(apiurl);
 				console.log(data);
-				document.getElementById('data').innerHTML = syntaxHighlight(JSON.stringify(data));
+				document.getElementById('data').innerHTML = '<pre>' + syntaxHighlight(JSON.stringify(data)) + '</pre>';
 			} catch (error) {
 				console.error("Error!", error.message);
 			}
