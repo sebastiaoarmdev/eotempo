@@ -18,6 +18,28 @@
 
 		const apiurl = 'https://api.hgbrasil.com/weather?format=json-cors&key=38c0fb37&user_ip=remote';	
 
+		function syntaxHighlight(json) {
+			if (typeof json != 'string') {
+				json = JSON.stringify(json, undefined, 2);
+			}
+			json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+			return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+				let $class = 'number';
+				if (/^"/.test(match)) {
+					if (/:$/.test(match)) {
+						$class = 'key';
+					} else {
+						$class = 'string';
+					}
+				} else if (/true|false/.test(match)) {
+					$class = 'boolean';
+				} else if (/null/.test(match)) {
+					$class = 'null';
+				}
+				return '<span class="' + $class + '">' + match + '</span>';
+			});
+		}
+		
 		async function getData(url) {
 			const response = await fetch(url);
 			const data = await response.json();
@@ -28,7 +50,7 @@
 			try {
 				const data = await getData(apiurl);
 				console.log(data);
-				document.getElementById('data').innerText = JSON.stringify(data);
+				document.getElementById('data').innerText = syntaxHighlight(JSON.stringify(data));
 			} catch (error) {
 				console.error("Error!", error.message);
 			}
