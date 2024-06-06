@@ -163,7 +163,7 @@
 				rainSpan.innerText = `• Chuva na última 1h: ${results.rain}mm`;
 				windSpan.innerText = `• Vento: ${results.wind_speedy} ${results.wind_direction}° ${results.wind_cardinal}`;
 				sunriseSpan.innerText = `• Amanhecer às ${to24HourFormat(results.sunrise)}.`;
-				sunsetSpan.innerText = `• Anoitecer às ${to24HourFormat(results.sunset)}`;
+				sunsetSpan.innerText = `• Anoitecer às ${to24HourFormat(results.sunset)}.`;
 				moonPhaseSpan.innerText = `• ${moonPhases[results.moon_phase]}.`;
 				conditionSlugImg.src = `https://assets.hgbrasil.com/weather/icons/conditions/${results.condition_slug}.svg`;
 				forecastDiv.innerHTML = '<h2 class="text-xl font-bold">Previsões:</h2><hr>';
