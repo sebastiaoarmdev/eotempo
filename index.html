@@ -32,10 +32,10 @@
 					<span id="humidity" class="font-semibold mt-1 text-gray-500">...</span>
 					<span id="cloudiness" class="font-semibold mt-1 text-gray-500">...</span>
 					<span id="rain" class="font-semibold mt-1 text-gray-500">...</span>
-					<span id="wind" class="font-semibold mt-1 text-gray-500">...</span>
 					<span id="sunrise" class="font-semibold mt-1 text-gray-500">...</span>
 					<span id="sunset" class="font-semibold mt-1 text-gray-500">...</span>
 					<span id="moon-phase" class="font-semibold mt-1 text-gray-500">...</span>
+					<span id="wind" class="font-semibold mt-1 text-gray-500">...</span>
 				</div>
 				<div class="flex flex-col">
 					<span class="mt-1"><img id="condition-slug" src="" width="128" height="128"></span>
@@ -160,7 +160,7 @@
 				descriptionSpan.innerText = `• ${results.description}.`;
 				humiditySpan.innerText = `• Umidade: ${results.humidity}%`;
 				cloudinessSpan.innerText = `• Nebulosidade: ${results.cloudiness}%`;
-				rainSpan.innerText = `• Volume de chuva na última hora: ${results.rain}mm`;
+				rainSpan.innerText = `• Chuva na última 1h: ${results.rain}mm`;
 				windSpan.innerText = `• Vento: ${results.wind_speedy} ${results.wind_direction}° ${results.wind_cardinal}`;
 				sunriseSpan.innerText = `• Amanhecer às ${to24HourFormat(results.sunrise)}.`;
 				sunsetSpan.innerText = `• Anoitecer às ${to24HourFormat(results.sunset)}`;
@@ -173,10 +173,10 @@
 							<div class="flex flex-col">
 								<h3 class="text-base font-bold">${daysOfWeek[element.weekday]}, ${element.date}:</h3>
 								<span class="font-semibold mt-1 text-gray-500">• ${element.description}.</span>
-								<span class="font-semibold mt-1 text-gray-500">• Temperatura mínima prevista: ${element.min}°C</span>
-								<span class="font-semibold mt-1 text-gray-500">• Temperatura máxima prevista: ${element.max}°C</span>
+								<span class="font-semibold mt-1 text-gray-500">• Mínima: ${element.min}°C</span>
+								<span class="font-semibold mt-1 text-gray-500">• Máxima: ${element.max}°C</span>
 								<span class="font-semibold mt-1 text-gray-500">• Nebulosidade: ${element.cloudiness}%</span>
-								<span class="font-semibold mt-1 text-gray-500">• Volume de chuva esperado: ${element.rain}mm</span>
+								<span class="font-semibold mt-1 text-gray-500">• Chuva esperada: ${element.rain}mm</span>
 								<span class="font-semibold mt-1 text-gray-500">• Chances de chuva: ${element.rain_probability}%</span>
 								<span class="font-semibold mt-1 text-gray-500">• Vento: ${element.wind_speedy}</span>
 							</div>
