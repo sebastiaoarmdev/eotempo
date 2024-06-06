@@ -5,72 +5,187 @@
 	<title>E o tempo?</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="E o tempo?">
+	<link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	<script src="https://cdn.tailwindcss.com"></script>
 	<style>
 	body {
 		font-family: monospace;
 	}
-	pre {
-		outline: 1px solid #ccc; 
-		padding: 5px; 
-		margin: 5px;
-	}
-	.string {
-		color: green;
-	}
-	.number { 
-		color: darkorange; 
-	}
-	.boolean { 
-		color: blue; 
-	}
-	.null { 
-		color: magenta;
-	}
-	.key { 
-		color: red; 
+	img {
+		max-width: 128px;
+		max-height: 128px;
 	}
 	</style>
 </head>
 <body>
-	<div id="data"></div>
+	<div id="root" class="flex flex-col items-center justify-center w-screen min-h-screen text-gray-700 p-10 bg-gradient-to-br from-pink-200 via-purple-200 to-indigo-200 ">
+		<!-- Component Start -->
+		<div class="w-full max-w-screen-sm bg-white p-10 rounded-xl ring-8 ring-white ring-opacity-40">
+			<h1 class="text-6xl font-bold">E o tempo?</h1>
+			<hr>
+			<div class="flex justify-between">
+				<div class="flex flex-col">
+					<span id="city" class="font-semibold mt-1 text-gray-500">...</span>
+					<span id="date-time" class="text-xs font-semibold mt-1 text-gray-400">...</span>
+					<span id="temperature" class="text-6xl font-bold">...</span>
+					<span id="description" class="font-semibold mt-1 text-gray-500">...</span>
+					<span id="humidity" class="font-semibold mt-1 text-gray-500">...</span>
+					<span id="cloudiness" class="font-semibold mt-1 text-gray-500">...</span>
+					<span id="rain" class="font-semibold mt-1 text-gray-500">...</span>
+					<span id="wind" class="font-semibold mt-1 text-gray-500">...</span>
+					<span id="sunrise" class="font-semibold mt-1 text-gray-500">...</span>
+					<span id="sunset" class="font-semibold mt-1 text-gray-500">...</span>
+					<span id="moon-phase" class="font-semibold mt-1 text-gray-500">...</span>
+				</div>
+				<div class="flex flex-col">
+					<span class="mt-1"><img id="condition-slug" src="" width="128" height="128"></span>
+				</div>
+			</div>
+		</div>
+		<div id="forecast" class="flex flex-col space-y-6 w-full max-w-screen-sm bg-white p-10 mt-10 rounded-xl ring-8 ring-white ring-opacity-40"></div>
+		<!-- Component End  -->
+	</div>
 	<script>
 		'use strict';
 
-		const apiurl = 'https://api.hgbrasil.com/weather?format=json-cors&key=38c0fb37&user_ip=remote';	
-
-		function syntaxHighlight(json) {
-			if (typeof json != 'string') {
-				json = JSON.stringify(json, undefined, 4);
+		const apiurl = (
+			'https://api.hgbrasil.com/weather?format=json-cors&key=38c0fb37&' + (
+				(location.hostname == 'localhost') ? 'woeid=455823' : 'user_ip=remote'
+			)
+		);
+		const moonPhases = {
+			'new': 'Lua nova',
+			'waxing_crescent': 'Lua crescente',
+			'first_quarter': 'Quarto crescente',
+			'waxing_gibbous': 'Gibosa crescente',
+			'full': 'Lua cheia',
+			'waning_gibbous': 'Gibosa minguante',
+			'last_quarter': 'Quarto minguante',
+			'waning_crescent': 'Lua minguante'
+		};
+		const daysOfWeek = {
+			'Dom': 'Domingo',
+			'Seg': 'Segunda-feira',
+			'Ter': 'Terça-feira',
+			'Qua': 'Quarta-feira',
+			'Qui': 'Quinta-feira',
+			'Sex': 'Sexta-feira',
+			'Sáb': 'Sábado',
+		};
+		const forecastDiv = document.getElementById('forecast');
+		const temperatureSpan = document.getElementById('temperature');
+		const citySpan = document.getElementById('city');
+		const dateTimeSpan = document.getElementById('date-time');
+		const descriptionSpan = document.getElementById('description');
+		const currentlySpan = document.getElementById('currently');
+		const humiditySpan = document.getElementById('humidity');
+		const cloudinessSpan = document.getElementById('cloudiness');
+		const rainSpan = document.getElementById('rain');
+		const windSpan = document.getElementById('wind');
+		const sunriseSpan = document.getElementById('sunrise');
+		const sunsetSpan = document.getElementById('sunset');
+		const moonPhaseSpan = document.getElementById('moon-phase');
+		const conditionSlugImg = document.getElementById('condition-slug');
+		const cache = location.pathname + 'cache';
+		
+		function secondsBetween(initialDate, finalDate) {
+			const deltaInMiliseconds = (finalDate - initialDate);
+			const deltaInSeconds = (deltaInMiliseconds / 1000);
+			return deltaInSeconds;
+		}
+		
+		function minutesBetween(initialDate, finalDate) {
+			const deltaInSeconds = secondsBetween(initialDate, finalDate);
+			const deltaInMinutes = (deltaInSeconds / 60);
+			return deltaInMinutes;
+		}
+		
+		function to24HourFormat(timeString) {
+			const [time, period] = timeString.split(' ');
+			const [hour, minute] = time.split(':');
+			let formattedHour = (period === 'pm') ? (parseInt(hour) + 12) : hour;
+			return formattedHour + ':' + minute;
+		}
+		
+		function cacheIsValid() {
+			const dataString = localStorage.getItem(cache);
+			if (dataString === null) {
+				console.log('Sem cachê!');
+				return false;
 			}
-			json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-			return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-				let $class = 'number';
-				if (/^"/.test(match)) {
-					if (/:$/.test(match)) {
-						$class = 'key';
-					} else {
-						$class = 'string';
-					}
-				} else if (/true|false/.test(match)) {
-					$class = 'boolean';
-				} else if (/null/.test(match)) {
-					$class = 'null';
-				}
-				return '<span class="' + $class + '">' + match + '</span>';
-			});
+			console.log('Cachê existe.');
+			const data = JSON.parse(dataString);
+			const [lastSyncDay, lastSyncMonth, lastSyncYear] = (data.results.date).split('/');
+			const [lastSyncHour, lastSyncMinute] = (data.results.time).split(':');
+			const lastSyncDate = new Date(lastSyncYear, (lastSyncMonth - 1), lastSyncDay, lastSyncHour, lastSyncMinute);
+			const lastRequestDate = new Date(data.got_at);
+			const now = new Date();
+			const minutesSinceLastSync = (minutesBetween(lastSyncDate, now));
+			const minutesSinceLastRequest = (minutesBetween(lastRequestDate, now));
+			console.log('Dados atualizados há', Math.floor(minutesSinceLastSync), 'minutos.');
+			console.log('Dados recebidos há', Math.floor(minutesSinceLastRequest), 'minutos.');
+			return ((minutesSinceLastSync < 60) || (minutesSinceLastRequest < 10));
 		}
 		
 		async function getData(url) {
+			console.log('Requisitando dados...');
 			const response = await fetch(url);
-			const data = await response.json();
+			console.log('Dados recebidos!');
+			const data = response.json();
 			return data;
 		}
 
 		async function showData() {
 			try {
-				const data = await getData(apiurl);
-				console.log(data);
-				document.getElementById('data').innerHTML = '<pre>' + syntaxHighlight(JSON.stringify(data, undefined, 4)) + '</pre>';
+				let data;
+				console.log('Cachê é válido?');
+				if (cacheIsValid()) {
+					console.log('Cachê é válido.');
+					const dataString = localStorage.getItem(cache);
+					data = JSON.parse(dataString);
+				} else {
+					console.log('Cachê não é válido.');
+					data = await getData(apiurl);
+					data.got_at = new Date();
+					const dataToCache = JSON.stringify(data);
+					console.log('Salvando cachê...');
+					localStorage.setItem(cache, dataToCache);
+					console.log('Cachê salvo.');
+				}
+				const results = data.results;
+				const forecast = results.forecast;
+				temperatureSpan.innerText = `${results.temp}°C`;
+				citySpan.innerText = `Tempo em ${results.city}:`;
+				dateTimeSpan.innerText = `Atualizado em ${results.date}, às ${results.time}.`;
+				descriptionSpan.innerText = `• ${results.description}.`;
+				humiditySpan.innerText = `• Umidade: ${results.humidity}%`;
+				cloudinessSpan.innerText = `• Nebulosidade: ${results.cloudiness}%`;
+				rainSpan.innerText = `• Volume de chuva na última hora: ${results.rain}mm`;
+				windSpan.innerText = `• Vento: ${results.wind_speedy} ${results.wind_direction}° ${results.wind_cardinal}`;
+				sunriseSpan.innerText = `• Amanhecer às ${to24HourFormat(results.sunrise)}.`;
+				sunsetSpan.innerText = `• Anoitecer às ${to24HourFormat(results.sunset)}`;
+				moonPhaseSpan.innerText = `• ${moonPhases[results.moon_phase]}.`;
+				conditionSlugImg.src = `https://assets.hgbrasil.com/weather/icons/conditions/${results.condition_slug}.svg`;
+				forecastDiv.innerHTML = '<h2 class="text-xl font-bold">Previsões:</h2><hr>';
+				forecast.forEach((element) => {
+					forecastDiv.innerHTML = forecastDiv.innerHTML + (`
+						<div class="flex justify-between">
+							<div class="flex flex-col">
+								<h3 class="text-base font-bold">${daysOfWeek[element.weekday]}, ${element.date}:</h3>
+								<span class="font-semibold mt-1 text-gray-500">• ${element.description}.</span>
+								<span class="font-semibold mt-1 text-gray-500">• Temperatura mínima prevista: ${element.min}°C</span>
+								<span class="font-semibold mt-1 text-gray-500">• Temperatura máxima prevista: ${element.max}°C</span>
+								<span class="font-semibold mt-1 text-gray-500">• Nebulosidade: ${element.cloudiness}%</span>
+								<span class="font-semibold mt-1 text-gray-500">• Volume de chuva esperado: ${element.rain}mm</span>
+								<span class="font-semibold mt-1 text-gray-500">• Chances de chuva: ${element.rain_probability}%</span>
+								<span class="font-semibold mt-1 text-gray-500">• Vento: ${element.wind_speedy}</span>
+							</div>
+							<div class="flex flex-col">
+								<span class="mt-1"><img id="condition-slug" src="https://assets.hgbrasil.com/weather/icons/conditions/${element.condition}.svg" width="128" height="128"></span>
+							</div>
+						</div>
+					`);
+				});
 			} catch (error) {
 				console.error("Error!", error.message);
 			}
