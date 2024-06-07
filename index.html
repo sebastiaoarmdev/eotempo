@@ -24,25 +24,18 @@
 			<h1 class="text-6xl font-bold">E o tempo?</h1>
 			<hr>
 			<div class="flex justify-between">
+				<div id="current" class="flex flex-col"></div>
 				<div class="flex flex-col">
-					<span id="city" class="font-semibold mt-1 text-gray-500">...</span>
-					<span id="date-time" class="text-xs font-semibold mt-1 text-gray-400">...</span>
-					<span id="temperature" class="text-6xl font-bold">...</span>
-					<span id="description" class="font-semibold mt-1 text-gray-500">...</span>
-					<span id="humidity" class="font-semibold mt-1 text-gray-500">...</span>
-					<span id="cloudiness" class="font-semibold mt-1 text-gray-500">...</span>
-					<span id="rain" class="font-semibold mt-1 text-gray-500">...</span>
-					<span id="sunrise" class="font-semibold mt-1 text-gray-500">...</span>
-					<span id="sunset" class="font-semibold mt-1 text-gray-500">...</span>
-					<span id="moon-phase" class="font-semibold mt-1 text-gray-500">...</span>
-					<span id="wind" class="font-semibold mt-1 text-gray-500">...</span>
-				</div>
-				<div class="flex flex-col">
-					<span class="mt-1"><img id="condition-slug" src="" width="128" height="128"></span>
+					<span class="mt-1">
+						<img id="condition-slug">
+					</span>
 				</div>
 			</div>
 		</div>
-		<div id="forecast" class="flex flex-col space-y-6 w-full max-w-screen-sm bg-white p-10 mt-10 rounded-xl ring-8 ring-white ring-opacity-40"></div>
+		<div id="forecast" class="flex flex-col space-y-6 w-full max-w-screen-sm bg-white p-10 mt-10 rounded-xl ring-8 ring-white ring-opacity-40">
+			<h2 class="text-xl font-bold">Previsões:</h2>
+			<hr>
+		</div>
 		<!-- Component End  -->
 	</div>
 	<script>
@@ -72,19 +65,8 @@
 			'Sex': 'Sexta-feira',
 			'Sáb': 'Sábado',
 		};
+		const currentDiv = document.getElementById('current');
 		const forecastDiv = document.getElementById('forecast');
-		const temperatureSpan = document.getElementById('temperature');
-		const citySpan = document.getElementById('city');
-		const dateTimeSpan = document.getElementById('date-time');
-		const descriptionSpan = document.getElementById('description');
-		const currentlySpan = document.getElementById('currently');
-		const humiditySpan = document.getElementById('humidity');
-		const cloudinessSpan = document.getElementById('cloudiness');
-		const rainSpan = document.getElementById('rain');
-		const windSpan = document.getElementById('wind');
-		const sunriseSpan = document.getElementById('sunrise');
-		const sunsetSpan = document.getElementById('sunset');
-		const moonPhaseSpan = document.getElementById('moon-phase');
 		const conditionSlugImg = document.getElementById('condition-slug');
 		const cache = location.pathname + 'cache';
 		
@@ -152,39 +134,67 @@
 					localStorage.setItem(cache, dataToCache);
 					console.log('Cachê salvo.');
 				}
-				const results = data.results;
-				const forecast = results.forecast;
-				temperatureSpan.innerText = `${results.temp}°C`;
-				citySpan.innerText = `Em ${results.city}:`;
-				dateTimeSpan.innerText = `${results.date}, às ${results.time}.`;
-				descriptionSpan.innerText = `• ${results.description}.`;
-				humiditySpan.innerText = `• Umidade: ${results.humidity}%`;
-				cloudinessSpan.innerText = `• Nebulosidade: ${results.cloudiness}%`;
-				rainSpan.innerText = `• Chuva na última 1h: ${results.rain}mm`;
-				windSpan.innerText = `• Vento: ${results.wind_speedy} ${results.wind_direction}° ${results.wind_cardinal}`;
-				sunriseSpan.innerText = `• Amanhecer às ${to24HourFormat(results.sunrise)}.`;
-				sunsetSpan.innerText = `• Anoitecer às ${to24HourFormat(results.sunset)}.`;
-				moonPhaseSpan.innerText = `• ${moonPhases[results.moon_phase]}.`;
-				conditionSlugImg.src = `https://assets.hgbrasil.com/weather/icons/conditions/${results.condition_slug}.svg`;
-				forecastDiv.innerHTML = '<h2 class="text-xl font-bold">Previsões:</h2><hr>';
-				forecast.forEach((element) => {
-					forecastDiv.innerHTML = forecastDiv.innerHTML + (`
-						<div class="flex justify-between">
-							<div class="flex flex-col">
-								<h3 class="text-base font-bold">${daysOfWeek[element.weekday]}, ${element.date}:</h3>
-								<span class="font-semibold mt-1 text-gray-500">• ${element.description}.</span>
-								<span class="font-semibold mt-1 text-gray-500">• Mínima: ${element.min}°C</span>
-								<span class="font-semibold mt-1 text-gray-500">• Máxima: ${element.max}°C</span>
-								<span class="font-semibold mt-1 text-gray-500">• Nebulosidade: ${element.cloudiness}%</span>
-								<span class="font-semibold mt-1 text-gray-500">• Chuva esperada: ${element.rain}mm</span>
-								<span class="font-semibold mt-1 text-gray-500">• Chances de chuva: ${element.rain_probability}%</span>
-								<span class="font-semibold mt-1 text-gray-500">• Vento: ${element.wind_speedy}</span>
-							</div>
-							<div class="flex flex-col">
-								<span class="mt-1"><img id="condition-slug" src="https://assets.hgbrasil.com/weather/icons/conditions/${element.condition}.svg" width="128" height="128"></span>
-							</div>
-						</div>
-					`);
+				const currentData = data.results;
+				const currentDataArray = [
+					{'class': 'font-semibold mt-1 text-gray-500', data: currentData.city},
+					{'class': 'text-xs font-semibold mt-1 text-gray-400', data: `${currentData.date} ${currentData.time}`},
+					{'class': 'text-6xl font-bold', data: `${currentData.temp}°C`},
+					{'class': 'font-semibold mt-1 text-gray-500', data: `• ${currentData.description}`},
+					{'class': 'font-semibold mt-1 text-gray-500', data: `• Umidade: ${currentData.humidity}%`},
+					{'class': 'font-semibold mt-1 text-gray-500', data: `• Nebulosidade: ${currentData.cloudiness}%`},
+					{'class': 'font-semibold mt-1 text-gray-500', data: `• Chuva na última 1h: ${currentData.rain}mm`},
+					{'class': 'font-semibold mt-1 text-gray-500', data: `• Amanhecer: ${to24HourFormat(currentData.sunrise)}`},
+					{'class': 'font-semibold mt-1 text-gray-500', data: `• Anoitecer: ${to24HourFormat(currentData.sunset)}`},
+					{'class': 'font-semibold mt-1 text-gray-500', data: `• ${moonPhases[currentData.moon_phase]}`},
+					{'class': 'font-semibold mt-1 text-gray-500', data: `• Vento: ${currentData.wind_speedy} ${currentData.wind_direction}° ${currentData.wind_cardinal}`}
+				];
+				currentDataArray.forEach((element) => {
+					const span = document.createElement('span');
+					span.className = element.class;
+					span.innerText = element.data;
+					currentDiv.appendChild(span);
+				});
+				conditionSlugImg.setAttribute('src', `https://assets.hgbrasil.com/weather/icons/conditions/${currentData.condition_slug}.svg`);
+				conditionSlugImg.setAttribute('width', '128');
+				conditionSlugImg.setAttribute('height', '128');
+				const forecastData = data.results.forecast;
+				forecastData.forEach((element) => {					
+					const forecastDataArray = [
+						{'class': 'text-base font-bold', data: `${daysOfWeek[element.weekday]}, ${element.date}:`},
+						{'class': 'font-semibold mt-1 text-gray-500', data: `• ${element.description}`},
+						{'class': 'font-semibold mt-1 text-gray-500', data: `• Mínima: ${element.min}°C`},
+						{'class': 'font-semibold mt-1 text-gray-500', data: `• Máxima: ${element.max}°C`},
+						{'class': 'font-semibold mt-1 text-gray-500', data: `• Nebulosidade: ${element.cloudiness}%`},
+						{'class': 'font-semibold mt-1 text-gray-500', data: `• Chuva esperada: ${element.rain}mm`},
+						{'class': 'font-semibold mt-1 text-gray-500', data: `• Chances de chuva: ${element.rain_probability}%`},
+						{'class': 'font-semibold mt-1 text-gray-500', data: `• Vento: ${element.wind_speedy}`}
+					];
+					const columnsDiv = document.createElement('div');
+					columnsDiv.classList.add('flex');
+					columnsDiv.classList.add('justify-between');
+					const textColumnDiv = document.createElement('div');
+					textColumnDiv.classList.add('flex');
+					textColumnDiv.classList.add('flex-col');
+					const imageColumnDiv = document.createElement('div');
+					imageColumnDiv.classList.add('flex');
+					imageColumnDiv.classList.add('flex-col');
+					const imageSpan = document.createElement('span');
+					imageSpan.classList.add('mt-1');
+					const imgTag = document.createElement('img');
+					imgTag.setAttribute('src', `https://assets.hgbrasil.com/weather/icons/conditions/${element.condition}.svg`);
+					imgTag.setAttribute('width', '128');
+					imgTag.setAttribute('height', '128');
+					forecastDiv.appendChild(columnsDiv);
+					columnsDiv.appendChild(textColumnDiv);
+					forecastDataArray.forEach((element) => {
+						const span = document.createElement('span');
+						span.className = element.class;
+						span.innerText = element.data;
+						textColumnDiv.appendChild(span);
+					});
+					columnsDiv.appendChild(imageColumnDiv);
+					imageColumnDiv.appendChild(imageSpan);
+					imageSpan.appendChild(imgTag);
 				});
 			} catch (error) {
 				console.error("Error!", error.message);
