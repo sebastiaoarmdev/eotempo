@@ -22,6 +22,11 @@
 		<!-- Component Start -->
 		<div class="w-full max-w-screen-sm bg-white p-10 rounded-xl ring-8 ring-white ring-opacity-40">
 			<h1 class="text-6xl font-bold">E o tempo?</h1>
+			<a class="bg-sky-300 p-1" href="./?woeid=455820">Belém, PA</a>
+			<a class="bg-sky-300 p-1" href="./?woeid=455819">Brasília, DF</a>
+			<a class="bg-sky-300 p-1" href="./?woeid=455830">Fortaleza, CE</a>
+			<a class="bg-sky-300 p-1" href="./?woeid=455823">Porto Alegre, RS</a>
+			<a class="bg-sky-300 p-1" href="./?woeid=455827">São Paulo, SP</a>
 			<hr>
 			<div class="flex justify-between">
 				<div id="current" class="flex flex-col"></div>
@@ -41,9 +46,11 @@
 	<script>
 		'use strict';
 
+		const urlParams = new URLSearchParams(location.search);
+		const woeid = urlParams.get('woeid');
 		const apiurl = (
 			'https://api.hgbrasil.com/weather?format=json-cors&key=38c0fb37&' + (
-				(location.hostname == 'localhost') ? 'woeid=455823' : 'user_ip=remote'
+				woeid ? `woeid=${woeid}` : 'user_ip=remote'
 			)
 		);
 		const moonPhases = {
@@ -68,7 +75,7 @@
 		const currentDiv = document.getElementById('current');
 		const forecastDiv = document.getElementById('forecast');
 		const conditionSlugImg = document.getElementById('condition-slug');
-		const cache = location.pathname + 'cache';
+		const cache = location.pathname + location.search;
 		
 		function secondsBetween(initialDate, finalDate) {
 			const deltaInMiliseconds = (finalDate - initialDate);
