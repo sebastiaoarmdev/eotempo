@@ -19,7 +19,6 @@
 </head>
 <body>
 	<div id="root" class="flex flex-col items-center justify-center w-screen min-h-screen text-gray-700 p-10 bg-gradient-to-br from-pink-200 via-purple-200 to-indigo-200 ">
-		<!-- Component Start -->
 		<div class="w-full max-w-screen-sm bg-white p-10 rounded-xl ring-8 ring-white ring-opacity-40">
 			<h1 class="text-6xl font-bold">E o tempo?</h1>
 			<div class="leading-loose">
@@ -42,7 +41,6 @@
 			<h2 class="text-xl font-bold">Previsões:</h2>
 			<hr>
 		</div>
-		<!-- Component End  -->
 	</div>
 	<script>
 		'use strict';
@@ -144,17 +142,17 @@
 				}
 				const currentData = data.results;
 				const currentDataArray = [
-					{'class': 'font-semibold mt-1 text-gray-500', data: currentData.city},
-					{'class': 'text-xs font-semibold mt-1 text-gray-400', data: `${currentData.date} ${currentData.time}`},
-					{'class': 'text-6xl font-bold', data: `${currentData.temp}°C`},
-					{'class': 'font-semibold mt-1 text-gray-500', data: `• ${currentData.description}`},
-					{'class': 'font-semibold mt-1 text-gray-500', data: `• Umidade: ${currentData.humidity}%`},
-					{'class': 'font-semibold mt-1 text-gray-500', data: `• Nebulosidade: ${currentData.cloudiness}%`},
-					{'class': 'font-semibold mt-1 text-gray-500', data: `• Chuva na última 1h: ${currentData.rain}mm`},
-					{'class': 'font-semibold mt-1 text-gray-500', data: `• Amanhecer: ${to24HourFormat(currentData.sunrise)}`},
-					{'class': 'font-semibold mt-1 text-gray-500', data: `• Anoitecer: ${to24HourFormat(currentData.sunset)}`},
-					{'class': 'font-semibold mt-1 text-gray-500', data: `• ${moonPhases[currentData.moon_phase]}`},
-					{'class': 'font-semibold mt-1 text-gray-500', data: `• Vento: ${currentData.wind_speedy} ${currentData.wind_direction}° ${currentData.wind_cardinal}`}
+					{'class': 'text-nowrap font-semibold mt-1 text-gray-500', data: currentData.city},
+					{'class': 'text-nowrap text-xs font-semibold mt-1 text-gray-400', data: `${currentData.date} ${currentData.time}`},
+					{'class': 'text-nowrap text-6xl font-bold', data: `${currentData.temp}°C`},
+					{'class': 'text-nowrap font-semibold mt-1 text-gray-500', data: `• ${currentData.description}`},
+					{'class': 'text-nowrap font-semibold mt-1 text-gray-500', data: `• Umidade: ${currentData.humidity}%`},
+					{'class': 'text-nowrap font-semibold mt-1 text-gray-500', data: `• Nebulosidade: ${currentData.cloudiness}%`},
+					{'class': 'text-nowrap font-semibold mt-1 text-gray-500', data: `• Chuva na última 1h: ${currentData.rain}mm`},
+					{'class': 'text-nowrap font-semibold mt-1 text-gray-500', data: `• Amanhecer: ${to24HourFormat(currentData.sunrise)}`},
+					{'class': 'text-nowrap font-semibold mt-1 text-gray-500', data: `• Anoitecer: ${to24HourFormat(currentData.sunset)}`},
+					{'class': 'text-nowrap font-semibold mt-1 text-gray-500', data: `• ${moonPhases[currentData.moon_phase]}`},
+					{'class': 'text-nowrap font-semibold mt-1 text-gray-500', data: `• Vento: ${currentData.wind_speedy} ${currentData.wind_direction}° ${currentData.wind_cardinal}`}
 				];
 				currentDataArray.forEach((element) => {
 					const span = document.createElement('span');
@@ -168,14 +166,14 @@
 				const forecastData = data.results.forecast;
 				forecastData.forEach((element) => {					
 					const forecastDataArray = [
-						{'class': 'text-base font-bold', data: `${daysOfWeek[element.weekday]}, ${element.date}:`},
-						{'class': 'font-semibold mt-1 text-gray-500', data: `• ${element.description}`},
-						{'class': 'font-semibold mt-1 text-gray-500', data: `• Mínima: ${element.min}°C`},
-						{'class': 'font-semibold mt-1 text-gray-500', data: `• Máxima: ${element.max}°C`},
-						{'class': 'font-semibold mt-1 text-gray-500', data: `• Nebulosidade: ${element.cloudiness}%`},
-						{'class': 'font-semibold mt-1 text-gray-500', data: `• Chuva esperada: ${element.rain}mm`},
-						{'class': 'font-semibold mt-1 text-gray-500', data: `• Chances de chuva: ${element.rain_probability}%`},
-						{'class': 'font-semibold mt-1 text-gray-500', data: `• Vento: ${element.wind_speedy}`}
+						{'class': 'text-nowrap text-base font-bold', data: `${daysOfWeek[element.weekday]}, ${element.date}:`},
+						{'class': 'text-nowrap font-semibold mt-1 text-gray-500', data: `• ${element.description}`},
+						{'class': 'text-nowrap font-semibold mt-1 text-gray-500', data: `• Mínima: ${element.min}°C`},
+						{'class': 'text-nowrap font-semibold mt-1 text-gray-500', data: `• Máxima: ${element.max}°C`},
+						{'class': 'text-nowrap font-semibold mt-1 text-gray-500', data: `• Nebulosidade: ${element.cloudiness}%`},
+						{'class': 'text-nowrap font-semibold mt-1 text-gray-500', data: `• Chuva esperada: ${element.rain}mm`},
+						{'class': 'text-nowrap font-semibold mt-1 text-gray-500', data: `• Chances de chuva: ${element.rain_probability}%`},
+						{'class': 'text-nowrap font-semibold mt-1 text-gray-500', data: `• Vento: ${element.wind_speedy}`}
 					];
 					const columnsDiv = document.createElement('div');
 					columnsDiv.classList.add('flex');
