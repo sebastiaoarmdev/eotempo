@@ -25,12 +25,10 @@
 				<span class="border border-pink text-nowrap bg-indigo-200 p-0.5"><a href="./?woeid=455827">São Paulo, SP</a></span>
 			</div>
 			<div class="flex justify-between">
-				<div id="current" class="flex flex-col">
-					<span class="loading-signal hidden animate-spin text-9xl">•</span>
-				</div>
+				<div id="current" class="flex flex-col"></div>
 				<div class="flex flex-col">
 					<span class="mt-1">
-						<img id="condition-slug" class="w-44 h-44">
+						<img id="condition-slug" width="176" height="176">
 					</span>
 				</div>
 			</div>
@@ -38,7 +36,6 @@
 		<div id="forecast" class="flex flex-col space-y-6 w-full max-w-screen-sm bg-white p-6 mt-10 rounded-xl ring-8 ring-white ring-opacity-40">
 			<h2 class="text-xl font-bold">Previsões:</h2>
 			<hr>
-			<span class="loading-signal hidden animate-spin text-9xl">•</span>
 		</div>
 	</div>
 	<script>
@@ -73,7 +70,6 @@
 		const currentDiv = document.getElementById('current');
 		const forecastDiv = document.getElementById('forecast');
 		const conditionSlugImg = document.getElementById('condition-slug');
-		const loadingSignalSpans = document.getElementsByClassName('loading-signal');
 		const cache = location.pathname + location.search;
 		
 		function secondsBetween(initialDate, finalDate) {
@@ -125,9 +121,6 @@
 
 		async function showData() {
 			try {
-				for (let loadingSignalSpan of loadingSignalSpans) {
-					loadingSignalSpan.classList.remove('hidden');
-				};
 				let data;
 				console.log('Cachê é válido?');
 				if (cacheIsValid()) {
@@ -189,8 +182,8 @@
 					imageSpan.classList.add('mt-1');
 					const imgTag = document.createElement('img');
 					imgTag.setAttribute('src', `https://assets.hgbrasil.com/weather/icons/conditions/${element.condition}.svg`);
-					imgTag.classList.add('w-44');
-					imgTag.classList.add('h-44');
+					imgTag.setAttribute('width', '176');
+					imgTag.setAttribute('height', '176');
 					forecastDiv.appendChild(columnsDiv);
 					columnsDiv.appendChild(textColumnDiv);
 					forecastDataArray.forEach((element) => {
@@ -202,10 +195,7 @@
 					columnsDiv.appendChild(imageColumnDiv);
 					imageColumnDiv.appendChild(imageSpan);
 					imageSpan.appendChild(imgTag);
-				});				
-				for (let loadingSignalSpan of loadingSignalSpans) {
-					loadingSignalSpan.classList.add('hidden');
-				};
+				});
 			} catch (error) {
 				console.error('Error!', error.message);
 			}
