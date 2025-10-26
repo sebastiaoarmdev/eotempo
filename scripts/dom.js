@@ -133,8 +133,8 @@ export function renderForecast(forecastData) {
         
 		const imgTag = document.createElement('img');
 		imgTag.setAttribute('src', `https://assets.hgbrasil.com/weather/icons/conditions/${element.condition}.svg`);
-		imgTag.setAttribute('width', '128');
-		imgTag.setAttribute('height', '128');
+		imgTag.setAttribute('width', '96');
+		imgTag.setAttribute('height', '96');
         // **Acessibilidade (A11y):** Garantir o alt
 		imgTag.setAttribute('alt', `Ícone da previsão: ${element.description}`); 
         
