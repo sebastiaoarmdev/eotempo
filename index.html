@@ -10,32 +10,38 @@
 </head>
 <body>
 	<div id="root" class="flex flex-col items-center justify-center min-h-screen text-gray-700 p-6 bg-linear-to-br from-sky-100 via-sky-950 to-sky-950">
-		<div class="w-full max-w-screen-sm bg-white p-6 rounded-xl ring-8 ring-white ring-opacity-40">
-			<div class="leading-loose">
-				<span class="nav-chip"><a href="./">I.P.</a></span>
-				<span class="nav-chip"><a href="./?woeid=455820">Belém, PA</a></span>
-				<span class="nav-chip"><a href="./?woeid=455819">Brasília, DF</a></span>
-				<span class="nav-chip"><a href="./?woeid=455830">Fortaleza, CE</a></span>
-				<span class="nav-chip"><a href="./?woeid=455823">Porto Alegre, RS</a></span>
-				<span class="nav-chip"><a href="./?woeid=455827">São Paulo, SP</a></span>
-			</div>
-			<p class="text-4xl font-bold">E o tempo agora em</p>
-			<h1 class="text-6xl font-bold">...?</h1>
-			<hr class="my-4">
-			<div class="flex justify-between">
-				<div id="current" class="flex flex-col"></div>
-				<div class="flex flex-col">
-					<span class="mt-1">
-						<img id="condition-slug" width="176" height="176">
-					</span>
+		<main>
+			<div class="w-full max-w-screen-sm bg-white p-6 rounded-xl ring-8 ring-white ring-opacity-40">
+				<div class="leading-loose">
+					<span class="nav-chip"><a href="./">I.P.</a></span>
+					<span class="nav-chip"><a href="./?woeid=455820">Belém, PA</a></span>
+					<span class="nav-chip"><a href="./?woeid=455819">Brasília, DF</a></span>
+					<span class="nav-chip"><a href="./?woeid=455830">Fortaleza, CE</a></span>
+					<span class="nav-chip"><a href="./?woeid=455823">Porto Alegre, RS</a></span>
+					<span class="nav-chip"><a href="./?woeid=455827">São Paulo, SP</a></span>
+				</div>
+				<p class="text-xl font-bold">E o tempo agora em</p>
+				<h1 class="text-3xl font-bold">...?</h1>
+				<hr class="my-4">
+				<div class="flex justify-between">
+					<div id="current" class="flex flex-col"></div>
+					<div class="flex flex-col">
+						<span class="mt-1">
+							<img id="condition-slug" width="128" height="128" alt="Ícone da condição climática atual">
+						</span>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div id="forecast" class="flex flex-col w-full max-w-screen-sm bg-white p-6 mt-10 mb-4 rounded-xl ring-8 ring-white ring-opacity-40">
-			<h2 class="text-xl font-bold">Previsões:</h2>
-			<hr class="my-4">
-		</div>
-		<p class="text-white">Por <a href="https://github.com/sebastiaoarmdev/" target="_blank">Sebastião Moura</a> com <span class="text-cyan-400 font-bold">JavaScript</span>, <span class="text-yellow-400 font-bold">HTML</span>, <span class="text-magent-400 font-bold">Tailwind CSS</span>, ❤️ e ☕.</p>
+			<div id="forecast" class="flex flex-col w-full max-w-screen-sm bg-white p-6 mt-10 mb-4 rounded-xl ring-8 ring-white ring-opacity-40">
+				<h2 class="text-xl font-bold">Previsões:</h2>
+				<hr class="my-4">
+			</div>
+		</main>
+		<footer class="text-center text-white">
+			<p>Por <a href="https://github.com/sebastiaoarmdev/" target="_blank">Sebastião Moura.</a></p>
+			<p>Com <span class="text-cyan-400 font-bold">JavaScript</span>, <span class="text-yellow-400 font-bold">HTML</span>, <span class="text-magent-400 font-bold">Tailwind CSS</span>, ❤️ e ☕.</p>
+			<p>Dados fornecidos por <a href="https://hgbrasil.com/" target="_blank">HG Brasil</a>.</pp>
+		</footer>
 	</div>
 	<script type="module" src="./scripts/main.js"></script>
 </body>
