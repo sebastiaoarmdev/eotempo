@@ -1,3 +1,7 @@
+// /scripts/weather.js
+
+'use strict';
+
 /**
  * Get apparent temperature. Use wind chill or heat index.
  *
@@ -7,12 +11,12 @@
  * @param P pressure
  * @returns {number}
  */
-function apparentTemperature(Tc, Vkmh, R, P) {
+export function apparentTemperature(Tc, Vkmh, R, P) {
     if (Tc < 10) {
-        return this.windChill(Tc, Vkmh);
+        return windChill(Tc, Vkmh);
     }
 
-    return this.heatIndex(Tc, R, P);
+    return heatIndex(Tc, R, P);
 }
 
 /**
@@ -110,7 +114,7 @@ function dewPoint(Tc, R) {
  * @param Tf temperature in fahrenheit
  * @returns {number}
  */
-function fahrenheitToCelsius(Tf) {
+export function fahrenheitToCelsius(Tf) {
     return (Tf - 32) / 1.8;
 }
 
@@ -120,6 +124,6 @@ function fahrenheitToCelsius(Tf) {
  * @param Tc temperature in celsius
  * @returns {number}
  */
-function celsiusToFahrenheit(Tc) {
+export function celsiusToFahrenheit(Tc) {
     return (Tc * 1.8) + 32;
 }
