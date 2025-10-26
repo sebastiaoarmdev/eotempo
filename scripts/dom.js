@@ -53,7 +53,7 @@ export function renderCurrentWeather(currentData) {
 
 	const currentDataArray = [
 		{'class': 'text-nowrap text-xs font-semibold mt-1 text-gray-400', data: `${currentData.date} ${currentData.time}`},
-		{'class': 'text-nowrap text-6xl font-bold', 'data': `${currentData.temp}°C`},
+		{'class': 'text-nowrap text-3xl font-bold', 'data': `${currentData.temp}°C`},
 		{'class': 'text-nowrap font-semibold mt-1 text-gray-500', 'data': `• Sensação: ${feelsLike}°C ${((feelsLike > 16) && (feelsLike < 28)) ? '🙂' : '😣'}`},
 		{'class': 'text-nowrap font-semibold mt-1 text-gray-500', 'data': `• ${currentData.description}`},
 		{'class': 'text-nowrap font-semibold mt-1 text-gray-500', 'data': `• Umidade: ${currentData.humidity}%`},
@@ -133,8 +133,8 @@ export function renderForecast(forecastData) {
         
 		const imgTag = document.createElement('img');
 		imgTag.setAttribute('src', `https://assets.hgbrasil.com/weather/icons/conditions/${element.condition}.svg`);
-		imgTag.setAttribute('width', '176');
-		imgTag.setAttribute('height', '176');
+		imgTag.setAttribute('width', '128');
+		imgTag.setAttribute('height', '128');
         // **Acessibilidade (A11y):** Garantir o alt
 		imgTag.setAttribute('alt', `Ícone da previsão: ${element.description}`); 
         
