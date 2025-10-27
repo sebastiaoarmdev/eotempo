@@ -13,6 +13,7 @@ Este projeto foi desenvolvido utilizando as seguintes tecnologias e ferramentas:
 * **Linguagem Principal**: JavaScript (ES6 Modules).
 * **Estilização**: Tailwind CSS.
 * **API de Dados**: HG Brasil Weather API.
+* **Arquitetura**:	PWA (Service Worker, Manifest).
 
 ## Destaques de Engenharia e Performance
 
@@ -26,8 +27,8 @@ Todo o código JavaScript é estruturado em módulos ES6, garantindo a separaç�
   * `api.js`: Gerencia a comunicação e as URLs da API.
   * `cache.js`: Lógica de cache inteligente (`localStorage`).
   * `dom.js`: Exclusivo para manipulação e renderização da interface (DOM).
-  * `weather.js`: Funções puras de cálculo científico (ex: sensação térmica).
-  * `utils.js`: Funções de utilidade genéricas (ex: formatação de tempo).
+  * `weather.js`: Funções puras de cálculo científico (ex.: sensação térmica).
+  * `utils.js`: Funções de utilidade genéricas (ex.: formatação de tempo).
 
 ### 2\. Performance Otimizada
 
@@ -40,6 +41,13 @@ Todo o código JavaScript é estruturado em módulos ES6, garantindo a separaç�
   * **Acessibilidade (A11y):** Todas as imagens de condição do tempo possuem atributos `alt` descritivos.
   * **Design Responsivo:** Layout adaptativo para dispositivos móveis e desktop, com chips de navegação que se ajustam ao tamanho da tela.
   * **SEO:** O título da página (`<title>`) é atualizado dinamicamente pelo JavaScript com o nome da cidade, melhorando a experiência e o SEO.
+
+### 4\. Progressive Web App (PWA)
+
+O projeto pode ser instalado como um aplicativo nativo no celular ou desktop, oferecendo uma experiência offline-first e app-like:
+
+  * **Instalável**: Definido via manifest.json.
+  * **Offline-First**: O Service Worker intercepta requisições, garantindo que o App Shell (HTML, CSS, JS) seja carregado mesmo sem conexão.
 
 ## Contribuição
 
