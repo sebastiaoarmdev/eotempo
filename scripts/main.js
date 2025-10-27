@@ -27,3 +27,16 @@ async function showData() {
 }
 
 showData();
+
+// PWA: Lógica de Registro do Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/eotempo/sw.js', { scope: '/eotempo/' })
+      .then(reg => {
+        console.log('Service Worker registrado com sucesso. Scope:', reg.scope);
+      })
+      .catch(err => {
+        console.error('Falha no registro do Service Worker:', err);
+      });
+  });
+}
