@@ -1,0 +1,21 @@
+{
+  "name": "E o Tempo?",
+  "short_name": "TempoAgora",
+  "description": "Previsão do tempo com alta performance e cache.",
+  "start_url": "/eotempo/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "/eotempo/images/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/eotempo/images/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
